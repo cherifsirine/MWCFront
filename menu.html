@@ -35,7 +35,7 @@
         const username = localStorage.getItem('username');
 
         try {
-            const response = await fetch('http://localhost:3000/all-groups', {
+            const response = await fetch('https://mwcback-production.up.railway.app/all-groups', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username })
