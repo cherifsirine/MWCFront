@@ -31,7 +31,7 @@
         let candidateData = [];
 
         async function loadCandidates() {
-            const response = await fetch('http://localhost:3000/get-candidates', {
+            const response = await fetch('https://mwcback-production.up.railway.app/get-candidates', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ group })
@@ -76,7 +76,7 @@
         async function saveAll() {
     for (const c of candidateData) {
         if (!c.zustand) continue;
-        await fetch('http://localhost:3000/save-attendance', {
+        await fetch('https://mwcback-production.up.railway.app/save-attendance', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
