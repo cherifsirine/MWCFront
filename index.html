@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Workforce App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="MWC.png">
+
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen" class="screen">
+        <img src="Logo.png" alt="Logo" class="logo">
+        <img src="Welcome Image.png" alt="Welcome Image" class="welcome-image">
+        <button class="start-button" onclick="goToLogin()">Starten</button>
+    </div>
+
+   <!-- Login Screen -->
+<div id="loginScreen" class="screen hidden">
+    <div class="login-container">
+        <div class="login-image-section">
+            <img src="loggin.png" alt="Login Illustration">
+        </div>
+        <div class="login-form-section">
+            <h1>Willkommen zurück!</h1>
+            <p>Bitte melden Sie sich an, um fortzufahren.</p>
+            <input type="text" id="username" placeholder="Benutzername" required>
+            <input type="password" id="password" placeholder="Passwort" required>
+            <button onclick="submitLogin()">Anmelden</button>
+            <p id="loginError" style="color:red; display:none; margin-top:10px;">Falscher Benutzername oder falsches Passwort</p>
+        </div>
+    </div>
+</div>
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>

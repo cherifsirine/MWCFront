@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Anwesenheit erfassen</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1 id="greeting"></h1>
+        <table id="candidateTable">
+            <thead>
+                <tr>
+                    <th>Vorname</th>
+                    <th>Nachname</th>
+                    <th>Anwesenheit</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button id="saveAll" onclick="saveAll()">Alles speichern</button>
+    </div>
+
+    <script>
+        const group = localStorage.getItem('selectedGroup');
+        const lehrer = localStorage.getItem('username');
+        const today = new Date().toISOString().split('T')[0];
+
+        document.getElementById('greeting').textContent = `Guten Tag ${lehrer}, hier ist die Schülerliste der ${group} für den ${today}`;
+
+        let candidateData = [];
+
+        async function loadCandidates() {
+            const response = await fetch('http://localhost:3000/get-candidates', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ group })
+            });
+            const data = await response.json();
+            const tableBody = document.querySelector('#candidateTable tbody');
+
+            if (response.ok && data.candidates.length > 0) {
+                candidateData = data.candidates.map(c => ({ ...c, zustand: null }));
+
+                data.candidates.forEach((c, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${c.vorname}</td>
+                        <td>${c.nachname}</td>
+                        <td>
+                            <button class="present" type="button" onclick="setStatus(${index}, 'Anwesend')">Anwesend</button>
+                            <button class="absent" type="button" onclick="setStatus(${index}, 'Abwesend')">Abwesend</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="3">Keine Kandidaten gefunden.</td></tr>';
+            }
+        }
+
+        function setStatus(index, status) {
+    candidateData[index].zustand = status;
+
+    // Réinitialise les couleurs de tous les boutons de la ligne
+    const row = document.querySelectorAll('#candidateTable tbody tr')[index];
+    const buttons = row.querySelectorAll('button');
+    buttons.forEach(btn => btn.classList.remove('selected'));
+
+    // Applique la sélection au bon bouton
+    const selectedButton = status === 'Anwesend' ? row.querySelector('.present') : row.querySelector('.absent');
+    selectedButton.classList.add('selected');
+}
+
+
+        async function saveAll() {
+    for (const c of candidateData) {
+        if (!c.zustand) continue;
+        await fetch('http://localhost:3000/save-attendance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                lehrer,
+                datum: today,
+                zustand: c.zustand,
+                vorname: c.vorname,
+                nachname: c.nachname,
+                gruppe: group
+            })
+        });
+    }
+    window.location.href = 'success.html';
+}
+
+
+        loadCandidates();
+    </script>
+</body>
+</html>

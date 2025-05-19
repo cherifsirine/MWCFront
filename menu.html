@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Workforce Smart</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+        <link rel="icon" type="image/png" href="MWC.png">
+
+</head>
+<body>
+    <div class="menu-card">
+        <div class="menu-content">
+            <h1>Willkommen bei Medical Workforce Smart</h1>
+            <p>Verwalten Sie hier Anwesenheit und Noten Ihrer Kandidaten.</p>
+            
+            <label for="groupSelect">Wählen Sie die Gruppe</label><br>
+            <select id="groupSelect">
+                <option>⏳ Laden...</option>
+            </select>
+            
+            <div class="menu-buttons">
+                <button onclick="goTo('form.html')">Anwesenheit erfassen</button>
+                <button onclick="alert('Noten-Funktion kommt bald!')">Noten eintragen</button>
+            </div>
+        </div>
+        <div class="menu-image">
+            <img src="Groupes.png" alt="Menu Illustration">
+        </div>
+    </div>
+
+    <script>
+    window.onload = async () => {
+        const groupSelect = document.getElementById('groupSelect');
+        const username = localStorage.getItem('username');
+
+        try {
+            const response = await fetch('http://localhost:3000/all-groups', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username })
+            });
+
+            const data = await response.json();
+            console.log("📦 Groupes filtrés chargés :", data.gruppen);
+
+            if (response.ok && data.gruppen.length > 0) {
+                groupSelect.innerHTML = data.gruppen.map(g => `<option value="${g}">${g}</option>`).join('');
+            } else {
+                groupSelect.innerHTML = '<option>Keine Gruppen gefunden</option>';
+            }
+        } catch (error) {
+            console.error('❌ Erreur lors du chargement des groupes:', error);
+            groupSelect.innerHTML = '<option>Fehler beim Laden</option>';
+        }
+    };
+
+    function goTo(page) {
+        const selectedGroup = document.getElementById('groupSelect').value;
+        if (!selectedGroup || selectedGroup === 'Keine Gruppen gefunden') {
+            alert('Bitte wählen Sie eine Gruppe aus.');
+            return;
+        }
+
+        localStorage.setItem('selectedGroup', selectedGroup);
+        window.location.href = page;
+    }
+</script>
+
+</body>
+</html>
