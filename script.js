@@ -11,10 +11,12 @@ async function submitLogin() {
     errorMsg.style.display = 'none';
 
     try {
-        const response = await fetch('http://localhost:3000/authenticate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
+        const response = await fetch('https://mwcback-production.up.railway.app/authenticate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+});
+
         });
 
         const data = await response.json();
