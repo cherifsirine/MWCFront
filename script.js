@@ -12,20 +12,17 @@ async function submitLogin() {
 
     try {
         const response = await fetch('https://mwcback-production.up.railway.app/authenticate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-});
-
-  
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
 
         const data = await response.json();
 
         if (response.ok && data.success) {
             console.log('Groupes à stocker dans localStorage:', data.gruppen);
-
             localStorage.setItem('username', username);
-            localStorage.setItem('gruppen', JSON.stringify(data.gruppen));  // Les groupes sont déjà là
+            localStorage.setItem('gruppen', JSON.stringify(data.gruppen));
             window.location.href = 'menu.html';
         } else {
             errorMsg.textContent = 'Falscher Benutzername oder falsches Passwort';
@@ -37,14 +34,3 @@ async function submitLogin() {
         errorMsg.style.display = 'block';
     }
 }
-
-
-
-
-
-
-
-
-
-
-//const API_URL = 'https://your-deployed-backend-url/submit';
