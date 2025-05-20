@@ -17,7 +17,7 @@ async function submitLogin() {
     body: JSON.stringify({ username, password })
 });
 
-        });
+  
 
         const data = await response.json();
 
