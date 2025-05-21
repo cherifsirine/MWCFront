@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>Anwesenheit erfassen</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="form-container">
-        <h1 id="greeting"></h1>
+        <h1 id="greeting" class="greeting-text"></h1>
         <table id="candidateTable">
             <thead>
                 <tr>
@@ -23,10 +24,28 @@
 
     <script>
         const group = localStorage.getItem('selectedGroup');
-        const lehrer = localStorage.getItem('username');
+        const username = localStorage.getItem('username');
         const today = new Date().toISOString().split('T')[0];
 
-        document.getElementById('greeting').textContent = `Guten Tag ${lehrer}, hier ist die Schülerliste der ${group} für den ${today}`;
+        // 🔁 Appelle l'API Railway pour récupérer le nom complet
+        if (username) {
+            fetch('https://mwcback-production.up.railway.app/get-teacher-name', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username })
+            })
+            .then(res => res.json())
+            .then(data => {
+                const profName = data.name || username;
+                document.getElementById('greeting').textContent =
+                    `Guten Tag ${profName}, hier ist die Schülerliste der ${group} für den ${today}`;
+            })
+            .catch(err => {
+                console.error("❌ Fehler beim Laden des Lehrernamens:", err);
+                document.getElementById('greeting').textContent =
+                    `Guten Tag ${username}, hier ist die Schülerliste der ${group} für den ${today}`;
+            });
+        }
 
         let candidateData = [];
 
@@ -60,38 +79,34 @@
         }
 
         function setStatus(index, status) {
-    candidateData[index].zustand = status;
+            candidateData[index].zustand = status;
 
-    // Réinitialise les couleurs de tous les boutons de la ligne
-    const row = document.querySelectorAll('#candidateTable tbody tr')[index];
-    const buttons = row.querySelectorAll('button');
-    buttons.forEach(btn => btn.classList.remove('selected'));
+            const row = document.querySelectorAll('#candidateTable tbody tr')[index];
+            const buttons = row.querySelectorAll('button');
+            buttons.forEach(btn => btn.classList.remove('selected'));
 
-    // Applique la sélection au bon bouton
-    const selectedButton = status === 'Anwesend' ? row.querySelector('.present') : row.querySelector('.absent');
-    selectedButton.classList.add('selected');
-}
-
+            const selectedButton = status === 'Anwesend' ? row.querySelector('.present') : row.querySelector('.absent');
+            selectedButton.classList.add('selected');
+        }
 
         async function saveAll() {
-    for (const c of candidateData) {
-        if (!c.zustand) continue;
-        await fetch('https://mwcback-production.up.railway.app/save-attendance', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                lehrer,
-                datum: today,
-                zustand: c.zustand,
-                vorname: c.vorname,
-                nachname: c.nachname,
-                gruppe: group
-            })
-        });
-    }
-    window.location.href = 'success.html';
-}
-
+            for (const c of candidateData) {
+                if (!c.zustand) continue;
+                await fetch('https://mwcback-production.up.railway.app/save-attendance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        lehrer: username,
+                        datum: today,
+                        zustand: c.zustand,
+                        vorname: c.vorname,
+                        nachname: c.nachname,
+                        gruppe: group
+                    })
+                });
+            }
+            window.location.href = 'success.html';
+        }
 
         loadCandidates();
     </script>
