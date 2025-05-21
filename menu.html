@@ -5,8 +5,8 @@
     <title>Medical Workforce Smart</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="favicon.png">
-        <link rel="icon" type="image/png" href="MWC.png">
-
+    <link rel="icon" type="image/png" href="MWC.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="menu-card">
@@ -21,7 +21,7 @@
             
             <div class="menu-buttons">
                 <button onclick="goTo('form.html')">Anwesenheit erfassen</button>
-                <button onclick="alert('Noten-Funktion kommt bald!')">Noten eintragen</button>
+                <button onclick="goTo('noten.html')">Noten eintragen</button>
             </div>
         </div>
         <div class="menu-image">
@@ -65,7 +65,7 @@
         localStorage.setItem('selectedGroup', selectedGroup);
         window.location.href = page;
     }
-</script>
+    </script>
 
 </body>
 </html>
