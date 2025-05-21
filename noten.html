@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Noten Eingabe</title>
+    <link rel="stylesheet" href="noten.css">
+    <script defer src="script.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+    <div class="header-bar"></div>
+
+    <div class="form-container-wrapper">
+        <div class="form-header">
+            <h1>Guten Tag, <span id="profName"></span></h1>
+            <p><span id="groupName"></span> | <span id="todayDate"></span></p>
+        </div>
+
+        <div class="form-box">
+            <label for="candidateSelect">Kandidat auswählen:</label>
+            <select id="candidateSelect"></select>
+
+            <form id="marksForm" class="hidden">
+                <div id="markFields" class="mark-fields-grid"></div>
+
+                <div class="button-row">
+                    <button type="button" onclick="saveAndNext()">Speichern und Nächster</button>
+                    <button type="button" onclick="saveAndExit()">Speichern und beenden</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
