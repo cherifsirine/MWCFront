@@ -386,4 +386,14 @@ button.selected.absent {
         line-height: 1.4;
     }
 }
+@media (max-width: 768px) {
+  .screen .start-button {
+    top: auto;
+    bottom: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    font-size: 18px;
+  }
+}
+
 
