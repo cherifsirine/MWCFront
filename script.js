@@ -53,7 +53,9 @@ const markFieldNames = {
     "Bemerkung_zweiter_Testergebnis_A": "Bemerkung Zweiter A1.1",
     "Bemerkung_zweiter_Testergebnis_A0": "Bemerkung Zweiter A1.2",
     "Bemerkung_zweiter_Testergebnis_A1": "Bemerkung Zweiter A2.1",
-    "Bemerkung_zweiter_Testergebnis_A2": "Bemerkung Zweiter A2.2"
+    "Bemerkung_zweiter_Testergebnis_A2": "Bemerkung Zweiter A2.2",
+    "Testergebnis_B1": "Testergebnis B1",
+    "Bemerkung_Testergebnis_B1": "Bemerkung B1"
 };
 
 let candidatesList = [];
